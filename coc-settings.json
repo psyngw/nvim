@@ -1,0 +1,20 @@
+{
+  "coc.preferences.extensionUpdateCheck": "weekly",
+  "suggest.noselect": true,
+  "suggest.enablePreselect": false,
+  "suggest.triggerAfterInsertEnter": true,
+  "coc.preferences.formatOnSaveFiletypes": ["json", "py"],
+  "snippets.ultisnips.directories": ["$HOME/.config/nvim/Ultisnips/"],
+  "diagnostic.signOffset": 1,
+  "diagnostic.errorSign": "\uf467",
+  "diagnostic.warningSign": "\uf071",
+  "diagnostic.infoSign": "\uf129",
+  "diagnostic.hintSign": "\uf864",
+  "diagnostic.displayByAle": false,
+  "diagnostic.refreshOnInsertMode": false,
+  "diagnostic.refreshAfterSave": false,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.virtualTextPrefix": " ❯❯❯ ",
+  "diagnostic.virtualText": true,
+  "codeLens.enable": true
+}
