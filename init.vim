@@ -61,6 +61,7 @@ set completeopt=longest,noinsert,menuone,noselect,preview
 set ttyfast
 set lazyredraw
 set visualbell
+"set clipboard+=unnamedplus
 "silent !mkdir -p ~/.config/nvim/tmp/backup
 "silent !mkdir -p ~/.config/nvim/tmp/undo
 "silent !mkdir -p ~/.config/nvim/tmp/sessions
@@ -168,6 +169,13 @@ noremap B 5b
 
 source $HOME/.config/nvim/cursor.vim
 
+" add , for current line's words
+noremap <LEADER>r' :s/\(\w\+\)/'\1'/g<CR>:nohl<CR>
+noremap <LEADER>r" :s/\(\w\+\)/"\1"/g<CR>:nohl<CR>
+noremap <LEADER>r, :s/\(\w\+\)/\1,/g<CR>:nohl<CR>$x
+nmap <LEADER>r) 0v$hS)
+nmap <LEADER>r( 0v$hS(
+
 " ===
 " === Insert Mode Cursor Movement
 " ===
@@ -181,7 +189,7 @@ source $HOME/.config/nvim/cursor.vim
 inoremap ,z <ESC>zzi
 
 " TODO Press , + ? to jump to the next '<++>' and edit it
-inoremap ,e <ESC>Esc>/<++><CR>:nohlsearch<CR>c4l
+inoremap ,e <ESC>/<++><CR>:nohlsearch<CR>c4l
 
 " jump to the begin/end of the line
 " inoremap <C-h> <ESC>I
@@ -436,6 +444,7 @@ let g:gitgutter_sign_modified_removed = '▒'
 " autocmd BufWritePost * GitGutter
 nnoremap <LEADER>gf :GitGutterFold<CR>
 nnoremap <LEADER>gh :GitGutterPreviewHunk<CR>
+nnoremap <LEADER>gu :GitGutterUndoHunk<CR>
 nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
 nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 
