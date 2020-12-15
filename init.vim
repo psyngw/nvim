@@ -173,8 +173,9 @@ source $HOME/.config/nvim/cursor.vim
 noremap <LEADER>r' :s/\(\w\+\)/'\1'/g<CR>:nohl<CR>
 noremap <LEADER>r" :s/\(\w\+\)/"\1"/g<CR>:nohl<CR>
 noremap <LEADER>r, :s/\(\w\+\)/\1,/g<CR>:nohl<CR>$x
-nmap <LEADER>r) 0v$hS)
-nmap <LEADER>r( 0v$hS(
+nmap <LEADER>r) ^v$hS)
+nmap <LEADER>r( ^v$hS(
+nmap <LEADER>rr <SPACE>r,<SPACE>r'<SPACE>r)I
 
 " ===
 " === Insert Mode Cursor Movement
@@ -372,8 +373,20 @@ Plug 'luochen1990/rainbow'
 " Taglist
 Plug 'liuchengxu/vista.vim'
 
-call plug#end()
+" Plug 'dense-analysis/ale'
+" ranger
+Plug 'kevinhwang91/rnvimr'
 
+" subversive
+Plug 'svermeulen/vim-subversive'
+
+call plug#end()
+" let g:ale_python_pylint_options = '--load-plugins pylint_django'
+" let g:ale_fixers = {
+"             \ 'python': ['yapf', 'isort'],
+"             \ }
+" let g:ale_fix_on_save = 1
+" noremap <F2> :ALEFix<CR>
 " ===
 " === Optimize vim color
 " ===
@@ -679,3 +692,33 @@ vmap <LEADER>cu g<
 " === rainbow
 " ===
 let g:rainbow_active = 1
+
+" ===
+" === Rnvimr
+" ===
+let g:rnvimr_ex_enable = 1
+let g:rnvimr_pick_enable = 1
+let g:rnvimr_draw_border = 0
+" let g:rnvimr_bw_enable = 1
+highlight link RnvimrNormal CursorLine
+nnoremap <silent> R :RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
+let g:rnvimr_action = {
+            \ '<C-t>': 'NvimEdit tabedit',
+            \ '<C-x>': 'NvimEdit split',
+            \ '<C-v>': 'NvimEdit vsplit',
+            \ 'gw': 'JumpNvimCwd',
+            \ 'yw': 'EmitRangerCwd'
+            \ }
+let g:rnvimr_layout = { 'relative': 'editor',
+            \ 'width': &columns,
+            \ 'height': &lines,
+            \ 'col': 0,
+            \ 'row': 0,
+            \ 'style': 'minimal' }
+let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+
+" ===
+" === vim-subversive
+" ===
+nmap s <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
