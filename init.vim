@@ -277,7 +277,7 @@ noremap tol :+tabmove<CR>
 " === Markdown Settings TODO
 " ===
 " Snippets
-" source $XDG_CONFIG_HOME/nvim/md-snippets.vim
+source $HOME/.config/nvim/md-snippets.vim
 " " auto spell
 " autocmd BufRead,BufNewFile *.md setlocal spell
 
@@ -379,6 +379,13 @@ Plug 'kevinhwang91/rnvimr'
 
 " subversive
 Plug 'svermeulen/vim-subversive'
+
+" ===
+" === markdown
+" ===
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
+Plug 'dkarter/bullets.vim'
 
 call plug#end()
 " let g:ale_python_pylint_options = '--load-plugins pylint_django'
@@ -722,3 +729,27 @@ let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 " ===
 nmap s <plug>(SubversiveSubstitute)
 nmap ss <plug>(SubversiveSubstituteLine)
+
+" ===
+" === vim-instant-markdown
+" ===
+let g:instant_markdown_slow = 0
+let g:instant_markdown_autostart = 0
+" let g:instant_markdown_open_to_the_world = 1
+" let g:instant_markdown_allow_unsafe_content = 1
+" let g:instant_markdown_allow_external_content = 0
+" let g:instant_markdown_mathjax = 1
+let g:instant_markdown_autoscroll = 1
+let g:mkdp_browser = 'google-chrome-stable'
+let g:mkdp_browserfunc = 'open '
+let g:instant_markdown_logfile = '/home/warren/test.log'
+
+" ===
+" === bullets.vim
+" ===
+let g:bullets_enabled_file_types = [
+    \ 'markdown',
+    \ 'text',
+    \ 'gitcommit',
+    \ 'scratch'
+    \]
