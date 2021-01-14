@@ -33,6 +33,7 @@ set hidden
 set expandtab
 set tabstop=2
 set softtabstop=2
+set shiftwidth=2
 set autoindent
 " set pastetoggle=<F9>
 set list
@@ -129,6 +130,9 @@ vnoremap Y "+y
 nnoremap < <<
 nnoremap > >>
 
+" set current line to blank
+noremap D 0D
+
 " Search
 noremap <LEADER><CR> :nohlsearch<CR>
 
@@ -146,6 +150,12 @@ noremap <silent> <LEADER>o za
 "noremap \g :Git
 noremap <c-g> :tabe<CR>:-tabmove<CR>:term lazygit<CR>
 
+" paste system clipboard
+noremap ,p "+p
+noremap ,P "+P
+
+" mark list
+noremap mm :marks<CR>
 
 " ===
 " === Cursor Move
@@ -156,7 +166,7 @@ noremap <silent> J 5j
 noremap <silent> K 5k
 
 " H/L keys: go to the start/end of the line
-noremap <silent> H 0
+noremap <silent> H ^
 noremap <silent> L $
 
 " Faster in-line navigation
@@ -200,6 +210,9 @@ inoremap <C-l>h <ESC>I
 " jump to a new line to edit
 " inoremap <C-o> <ESC>o
 
+" delete privious word
+inoremap ,b <ESC>bcw
+
 " ===
 " === Command Mode Cursor Movement
 " ===
@@ -242,8 +255,10 @@ noremap sl :set splitright<CR>:vsplit<CR>
 " Resize splits with arrow keys
 noremap soj :res +5<CR>
 noremap sok :res -5<CR>
-noremap sol :vertical resize-5<CR>
-noremap soh :vertical resize+5<CR>
+" noremap sol :vertical resize-5<CR>
+" noremap soh :vertical resize+5<CR>
+noremap sol :vertical resize-
+noremap soh :vertical resize+
 
 " Place the two screens up and down
 " noremap sh <C-w>t<C-w>K
@@ -379,6 +394,9 @@ Plug 'kevinhwang91/rnvimr'
 
 " subversive
 Plug 'svermeulen/vim-subversive'
+
+" vim-sneak'
+Plug 'justinmk/vim-sneak'
 
 " ===
 " === markdown
@@ -753,3 +771,10 @@ let g:bullets_enabled_file_types = [
     \ 'gitcommit',
     \ 'scratch'
     \]
+
+" ===
+" === vim-sneak
+" ===
+let g:sneak#label = 1
+nmap f <Plug>Sneak_s
+nmap F <Plug>Sneak_S
