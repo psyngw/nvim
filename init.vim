@@ -210,7 +210,7 @@ inoremap <C-l>h <ESC>I
 " jump to a new line to edit
 " inoremap <C-o> <ESC>o
 
-" delete privious word
+" delete privious word , use C-w if u like
 inoremap ,b <ESC>bcw
 
 " ===
