@@ -72,7 +72,7 @@ set visualbell
 "	set undofile
 "	set undodir=~/.config/nvim/tmp/undo,.
 "endif
-set colorcolumn=100
+set colorcolumn=80,100
 set updatetime=100
 set virtualedit=block
 "
@@ -397,6 +397,9 @@ Plug 'svermeulen/vim-subversive'
 
 " vim-sneak'
 Plug 'justinmk/vim-sneak'
+
+" indent
+Plug 'Yggdroot/indentLine'
 
 " ===
 " === markdown

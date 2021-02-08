@@ -110,7 +110,7 @@ noremap 'h<SPACE> 6j
 noremap 'j<SPACE> 7j
 noremap 'k<SPACE> 8j
 noremap 'l<SPACE> 9j
-noremap ';<SPACE> 10j
+noremap 'a;<SPACE> 10j
 noremap 'aa<SPACE> 11j
 noremap 'as<SPACE> 12j
 noremap 'ad<SPACE> 13j
