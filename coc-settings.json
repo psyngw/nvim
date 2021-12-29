@@ -60,13 +60,20 @@
   "diagnostic.virtualTextPrefix": " ❯❯❯ ",
   "diagnostic.virtualText": true,
   "codeLens.enable": true,
+  "pyright.enable": true,
   "python.formatting.provider": "yapf",
   "python.linting.enabled": true,
-  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Enabled": false,
   "python.linting.flake8Args": ["--extend-ignore=E501"],
   "python.linting.pylintEnabled": false,
   "python.formatting.yapfArgs": [
     "--style",
     "{SPACES_AROUND_POWER_OPERATOR: True, SPACES_BEFORE_COMMENT: 1}"
-  ]
+  ],
+  "explorer.icon.enableNerdfont": true,
+  "explorer.keyMappings.global": {
+    "i": false,
+    "<cr>": false,
+    "v": "open:vsplit"
+  }
 }

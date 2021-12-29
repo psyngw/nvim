@@ -22,6 +22,7 @@ endif
 " let &t_ut=''
 " set autochdir
 
+let g:python3_host_prog = '/usr/bin/python'
 
 " ===
 " === Editor behavior
@@ -77,7 +78,7 @@ set updatetime=100
 set virtualedit=block
 "
 "au BufReadPost * if line("'\"") > 1 && line("'\"") <=line("$") | exe "normal! g'\"" | endif
-"set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
+set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 "set enc=utf8
 "set fencs=utf8,gbk,gb2312,gb18030
 
@@ -103,6 +104,36 @@ let g:terminal_color_11 = '#F4F99D'
 let g:terminal_color_12 = '#CAA9FA'
 let g:terminal_color_13 = '#FF92D0'
 let g:terminal_color_14 = '#9AEDFE'
+
+" ===
+" === Auto line
+" ===
+autocmd BufNewFile *.sh,*.py exec ":call SetTitle()"
+func SetTitle()
+if expand("%:e") == 'sh'
+ call setline(1,"#!/bin/bash")
+ call setline(2,"#")
+ call setline(3,"#**************************************************")
+ call setline(4,"# Author:         psyngw                          *")
+ call setline(5,"# GitHub:         @psyngw                         *")
+ call setline(6,"# Date:           ".strftime("%Y-%m-%d"). "                      *")
+ call setline(7,"# Description:                                    *")
+ call setline(8,"# Copyright ".strftime("%Y"). " by psyngw.All Rights Reserved    *")
+ call setline(9,"#**************************************************")
+ call setline(10,"")
+ call setline(11,"")
+endif
+if expand("%:e") == 'py'
+    call setline(1, "\#!/usr/bin/env python")
+    call setline(2, "\# -*- coding: utf-8 -*-")
+    call setline(3, "\# Author: psyngw")
+    call setline(4, "\# Date: ".strftime("%Y-%m-%d"))
+    normal G
+    normal o
+    normal o
+endif
+endfunc
+autocmd BufNewFile * normal G
 
 
 " ===
@@ -157,6 +188,13 @@ noremap ,P "+P
 " mark list
 noremap mm :marks<CR>
 
+" insert <++>
+noremap <LEADER>,< a<++><ESC>
+
+" insert date and time
+inoremap ,da <c-r>=strftime('%Y-%m-%d')<CR>
+inoremap ,ti <c-r>=strftime('%Y-%m-%d %H:%M:%S')<CR>
+
 " ===
 " === Cursor Move
 " ===
@@ -195,17 +233,20 @@ nmap <LEADER>rr <SPACE>r,<SPACE>r'<SPACE>r)I
 " not useful: vim's <C-i> == TAB
 " inoremap <C-a> <ESC>A
 " inoremap <C-i> <ESC>I
+inoremap <C-h> <C-\><C-o>^
 
 " Fast to move visiual to midlle of the screen
-inoremap ,z <ESC>zzi
+inoremap ,z <ESC>zza
 
 " TODO Press , + ? to jump to the next '<++>' and edit it
 inoremap ,e <ESC>/<++><CR>:nohlsearch<CR>c4l
 
 " jump to the begin/end of the line
-" inoremap <C-h> <ESC>I
-inoremap <C-l>l <ESC>A
-inoremap <C-l>h <ESC>I
+" inoremap <C-l>l <ESC>A
+" inoremap <C-l>h <ESC>I
+
+" fix <C-o> with <C-l>
+" inoremap <C-l> <C-\><C-o>
 
 " jump to a new line to edit
 " inoremap <C-o> <ESC>o
@@ -323,7 +364,7 @@ func! CompileRunGcc()
         set splitbelow
         exec "!g++ -std=c++11 % -Wall -o %<"
         :sp
-        :res -15
+        :res -10
         :term ./%<
     elseif &filetype == 'java'
         exec "!javac %"
@@ -355,7 +396,11 @@ func! CompileRunGcc()
     endif
 endfunc
 
-
+noremap ,y :call YapfFIle()<CR>
+func! YapfFIle()
+    silent exec "!yapf -i %:p"
+    " :term yapf -i %
+endfunc
 
 " ===
 " === Install Plugins with Vim-Plug
@@ -370,12 +415,16 @@ Plug 'gcmt/wildfire.vim' " Enter to select content.
 Plug 'tpope/vim-surround' " Visual content and 'S' + 'surround char', or 'cs<now><to>' to change, 'ds<now>' to delete.
 Plug 'mg979/vim-visual-multi' " select words with C-n, plus block visual with C-Down and C-Up
 Plug 'ajmwagar/vim-deus' " 'color deus' to enable
+" Plug 'sickill/vim-monokai' " 'color monokai' to enable
+" Plug 'junegunn/seoul256.vim' " 'color monokai' to enable
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 " Plug '~/.fzf' " add fzf home
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-fugitive'
-Plug 'psyngw/eleline.vim'
+" Plug 'psyngw/eleline.vim'
 " Plug 'vim-airline/vim-airline'
+Plug 'itchyny/lightline.vim'
 Plug 'ojroques/vim-scrollstatus'
 Plug 'airblade/vim-gitgutter'
 Plug 'cohama/agit.vim'
@@ -384,9 +433,12 @@ Plug 'RRethy/vim-illuminate'
 Plug 'honza/vim-snippets'
 Plug 'tomtom/tcomment_vim'
 Plug 'luochen1990/rainbow'
+Plug 'tpope/vim-repeat'
 
 " Taglist
 Plug 'liuchengxu/vista.vim'
+" Plug 'preservim/tagbar'
+" nmap <F8> :TagbarToggle<CR>
 
 " Plug 'dense-analysis/ale'
 " ranger
@@ -400,6 +452,17 @@ Plug 'justinmk/vim-sneak'
 
 " indent
 Plug 'Yggdroot/indentLine'
+
+" start index
+Plug 'mhinz/vim-startify'
+
+" Countbean
+Plug 'nathangrigg/vim-beancount'
+
+autocmd FileType beancount inoremap <c-l> <c-x><c-o>
+" autocmd FileType beancount inoremap . .<C-\><C-O>:AlignCommodity<CR>
+autocmd FileType beancount vnoremap <leader>= :AlignCommodity<CR>
+autocmd FileType beancount nnoremap <leader>= :AlignCommodity<CR>
 
 " ===
 " === markdown
@@ -415,12 +478,19 @@ call plug#end()
 "             \ }
 " let g:ale_fix_on_save = 1
 " noremap <F2> :ALEFix<CR>
+
 " ===
-" === Optimize vim color
+" === Optimize vim colorscheme
 " ===
 set termguicolors " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-color deus
+" color deus
+" color monokai
+" color seoul256-white
+" color seoul256
+let g:tokyonight_style = "day"
+color tokyonight
+" set background=dark
 
 " ================================= Plug Settings =======================================
 
@@ -440,8 +510,13 @@ set rtp+=/usr/bin/fzf
 set rtp+=/usr/local/opt/fzf
 " noremap <C-p> :Files<CR>
 noremap <LEADER>ff :Files<CR>
+noremap <LEADER>ft :BTags<CR>
 " noremap <C-h> :Histor<CR>
 noremap <LEADER>fh :Histor<CR>
+noremap <LEADER>fr :Rg<CR>
+noremap <LEADER>fs :BLines<CR>
+noremap <LEADER>fb :Buffers<CR>
+noremap <LEADER>fg :GFiles?<CR>
 let g:fzf_preview_window = ['right:50%']
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 
@@ -450,6 +525,21 @@ let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %
 " ===
 " powerline fonts powerline/fonts.git
 
+" ===
+" === lightline
+" ===
+let g:lightline = {
+      \ 'colorscheme': 'tokyonight',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified', 'git_head' ] ]
+      \ },
+      \ 'component_function': {
+      \   'filename': 'FugitivePath',
+      \   'git_head': 'FugitiveHead',
+      \   'near_func': 'NearestMethodOrFunction'
+      \ },
+      \ }
 
 " ===
 " === airline.vim
@@ -457,17 +547,18 @@ let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-let g:airline_section_x = '%{ScrollStatus()}'
+" let g:airline_section_x = '%{ScrollStatus()}'
 let g:airline_powerline_fonts = 1
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.dirty='⚡'
+let g:airline_left_sep = '  '
+let g:airline_left_alt_sep = '  '
+let g:airline_right_sep = '  '
+let g:airline_right_alt_sep = '  '
+let g:airline_symbols.branch = '  '
+let g:airline_symbols.readonly = '  '
+let g:airline_symbols.linenr = ' ☰ '
+let g:airline_symbols.maxlinenr = '  '
+let g:airline_symbols.dirty=' ⚡'
+let g:airline#extensions#tabline#enabled = 1
 
 " ===
 " === GitGutter
@@ -492,7 +583,7 @@ nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 " ===
 " === coc
 " ===
-let g:coc_global_extensions = ['coc-json', 'coc-vimlsp', 'coc-prettier', 'coc-python', 'coc-pyright', 'coc-actions', 'coc-explorer', 'coc-translator', 'coc-yank', 'coc-snippets']
+let g:coc_global_extensions = ['coc-json', 'coc-vimlsp', 'coc-prettier', 'coc-pyright', 'coc-actions', 'coc-explorer', 'coc-translator', 'coc-yank', 'coc-snippets', 'coc-go']
 
 nmap tt :CocCommand explorer<CR>
 nmap ts <Plug>(coc-translator-p)
@@ -540,7 +631,7 @@ endfunction
 
 " Use <c-space> to trigger completion.
 if has('nvim')
-  inoremap <silent><expr> <c-o> coc#refresh()
+  inoremap <silent><expr> <c-space> coc#refresh()
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
@@ -548,7 +639,7 @@ endif
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
 " inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+"                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -652,10 +743,11 @@ augroup end
 " " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " " provide custom statusline: lightline.vim, vim-airline.
 " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 " " Mappings for CoCList
-" " Show all diagnostics.
-" nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " " Manage extensions.
 " nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " " Show commands.
@@ -675,11 +767,11 @@ augroup end
 " ===
 " === coc-snippets
 " ===
-" imap <C-i> <Plug>(coc-snippets-expand)
-" vmap <C-i> <Plug>(coc-snippets-select)
+imap <C-j> <Plug>(coc-snippets-expand)
+" vmap <C-j> <Plug>(coc-snippets-select)
 let g:coc_snippet_next = '<c-j>'
 let g:coc_snippet_prev = '<c-k>'
-imap <C-j> <Plug>(coc-snippets-expand-jump)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
 let g:snips_author = 'wysgned'
 autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
 " $HOME/.config/nvim/plugged/vim-snippets/UltiSnips/"
@@ -691,19 +783,21 @@ autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
 noremap T :Vista!!<CR>
 noremap <c-t> :silent! Vista finder coc<CR>
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_default_executive = 'coc'
+let g:vista_default_executive = 'ctags'
 let g:vista_fzf_preview = ['right:50%']
+" let g:vista_sidebar_keepalt = 1
+let g:vista_echo_cursor = 1
 let g:vista#renderer#enable_icon = 1
 let g:vista#renderer#icons = {
         \   "function": "\uf794",
         \   "variable": "\uf71b",
         \  }
-" function! NearestMethodOrFunction() abort
-" "   return get(b:, 'vista_nearest_method_or_function', '')
-" " endfunction
-" " set statusline+=%{NearestMethodOrFunction()}
-" " autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-"
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+" set statusline+=%{NearestMethodOrFunction()}
+" autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
 let g:scrollstatus_size = 15
 
 " ===
@@ -781,3 +875,48 @@ let g:bullets_enabled_file_types = [
 let g:sneak#label = 1
 nmap f <Plug>Sneak_s
 nmap F <Plug>Sneak_S
+
+
+" ===
+" === vim-startify
+" ===
+" in a git repo, the list will be empty
+function! s:gitModified()
+    let files = systemlist('git ls-files -m 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+" same as above, but show untracked files, honouring .gitignore
+function! s:gitUntracked()
+    let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+let g:startify_lists = [
+        \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+        \ { 'type': 'sessions',  'header': ['   Sessions']       },
+        \ { 'type': 'files',     'header': ['   Files']            },
+        \ { 'type': 'dir',       'header': ['   Directory '. getcwd()] },
+        \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
+        \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
+        \ { 'type': 'commands',  'header': ['   Commands']       },
+        \ ]
+let g:startify_bookmarks = [
+      \ { 'c': '~/.config/nvim/init.vim' },
+      \ { 'rgem': '~/repo/gem_mtn' },
+      \ { 'rgbp': '~/repo/gbp' },
+      \ { 'ra': '~/repo' },
+      \]
+let g:startify_session_persistence = 1
+let g:startify_session_dir = '~/.config/nvim/session'
+" let g:startify_custon_header = 
+" require vim-gitbranch -> itchyny/vim-gitbranch
+" function! GetUniqueSessionName()
+"   let path = fnamemodify(getcwd(), ':~:t')
+"   let path = empty(path) ? 'no-project' : path
+"   let branch = gitbranch#name()
+"   let branch = empty(branch) ? '' : '-' . branch
+"   return substitute(path . branch, '/', '-', 'g')
+" endfunction
+"
+" autocmd User        StartifyReady silent execute 'SLoad '  . GetUniqueSessionName()
+" autocmd VimLeavePre *             silent execute 'SSave! ' . GetUniqueSessionName()
