@@ -81,6 +81,8 @@ set virtualedit=block
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 "set enc=utf8
 "set fencs=utf8,gbk,gb2312,gb18030
+autocmd InsertEnter * :set norelativenumber number
+autocmd InsertLeave * :set relativenumber
 
 " ===
 " " === Terminal Behaviors
@@ -166,6 +168,11 @@ noremap D 0D
 
 " Search
 noremap <LEADER><CR> :nohlsearch<CR>
+noremap <LEADER>fw /\<\><left><left>
+
+" Search TODO
+noremap <LEADER>tt :vimgrep /TODO/j %<CR>:cw<CR>
+noremap <LEADER>ta :vimgrep /TODO/j **/*.%:e<CR>:cw<CR>
 
 " Adjacent duplicate words
 " noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1
@@ -208,8 +215,8 @@ noremap <silent> H ^
 noremap <silent> L $
 
 " Faster in-line navigation
-noremap W 5w
-noremap B 5b
+" noremap W 5w
+" noremap B 5b
 
 " Ctrl + J or K will move up/down the view port without moving the cursor
 "noremap <C-J> 5<C-y>
@@ -278,7 +285,8 @@ cnoremap <M-l> <S-Right>
 " === Window management
 " ===
 " Use <LEADER> + arror keys for moving the cursor around windows
-noremap <LEADER>w <C-w>w
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+" noremap <LEADER>w <C-w>w
 noremap <LEADER>j <C-w>j
 noremap <LEADER>k <C-w>k
 noremap <LEADER>l <C-w>l
@@ -351,7 +359,7 @@ noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
 noremap \s :%s//g<left><left>
 
 " Auto change directory to current dir
-autocmd BufEnter * silent! lcd %:p:h
+" autocmd BufEnter * silent! lcd %:p:h
 
 " Compile function
 noremap ,r :call CompileRunGcc()<CR>
@@ -410,6 +418,9 @@ endfunc
 
 call plug#begin('~/.config/nvim/plugged')
 
+" Plug 'vim-scripts/TaskList.vim'  " use vimgrep instaed
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+
 " Editor Enhancement
 Plug 'gcmt/wildfire.vim' " Enter to select content.
 Plug 'tpope/vim-surround' " Visual content and 'S' + 'surround char', or 'cs<now><to>' to change, 'ds<now>' to delete.
@@ -425,6 +436,9 @@ Plug 'tpope/vim-fugitive'
 " Plug 'psyngw/eleline.vim'
 " Plug 'vim-airline/vim-airline'
 Plug 'itchyny/lightline.vim'
+" Plug 'akinsho/bufferline.nvim'
+" Plug 'romgrk/barbar.nvim'
+" Plug 'kyazdani42/nvim-web-devicons' " Recommended (for coloured icons)
 Plug 'ojroques/vim-scrollstatus'
 Plug 'airblade/vim-gitgutter'
 Plug 'cohama/agit.vim'
@@ -539,7 +553,17 @@ let g:lightline = {
       \   'git_head': 'FugitiveHead',
       \   'near_func': 'NearestMethodOrFunction'
       \ },
+      \ 'tabline': {
+        \ 'left': [['tabs']],
+        \ 'right': [['close']]
+      \},
       \ }
+" This snippets need to set after plug#end
+" lua << EOF
+" require('bufferline').setup()
+" EOF
+" let g:lightline#extensions#tabline#enabled = 0
+
 
 " ===
 " === airline.vim
@@ -902,8 +926,8 @@ let g:startify_lists = [
         \ ]
 let g:startify_bookmarks = [
       \ { 'c': '~/.config/nvim/init.vim' },
-      \ { 'rgem': '~/repo/gem_mtn' },
-      \ { 'rgbp': '~/repo/gbp' },
+      \ { 'rgem': '~/repo/gem_mtn/manage.py' },
+      \ { 'rgbp': '~/repo/gbp/manage.py' },
       \ { 'ra': '~/repo' },
       \]
 let g:startify_session_persistence = 1
