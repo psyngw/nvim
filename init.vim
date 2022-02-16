@@ -41,6 +41,7 @@ set list
 set listchars=tab:\|\ ,trail:▫
 set scrolloff=10
 set ttimeoutlen=0
+" set timeoutlen=800
 set notimeout
 set viewoptions=cursor,folds,slash,unix
 set wrap
@@ -164,15 +165,37 @@ nnoremap < <<
 nnoremap > >>
 
 " set current line to blank
-noremap D 0D
+" noremap D 0D
+" noremap C ^C
 
 " Search
 noremap <LEADER><CR> :nohlsearch<CR>
 noremap <LEADER>fw /\<\><left><left>
 
+" translate using crow-translate
+noremap <LEADER>tr :!crow <c-r><c-w> -t zh-CN -l zh-CN<CR>
+noremap <LEADER>ts :!crow -l zh-CN 
+
+" vimgrep function for python
+function! SearchFunc()
+  " execute "normal yiw"
+  " execute "vimgrep /\\(class\\)\\|\\(def\\) ".expand('<cword>')."(/ **"
+  silent! execute "vimgrep /\\(\\(class\\)\\|\\(def\\)\\|\\(func\\)\\) ".expand('<cword>')."(/ **/*".expand('%:e')
+  execute "echo getline('.')"
+  call feedkeys("\<c-o>")
+  " execute "normal <c-\><c-o>"
+endfunction
+" TODO optimize speed
+noremap <LEADER>fm :call SearchFunc()<CR>
+" command! -nargs SearchFunc(q-args)
+
 " Search TODO
 noremap <LEADER>tt :vimgrep /TODO/j %<CR>:cw<CR>
 noremap <LEADER>ta :vimgrep /TODO/j **/*.%:e<CR>:cw<CR>
+
+" spell check
+noremap <silent> <F11> :set spell!<CR>
+inoremap <silent> <F11> <C-o>:set spell!<CR>
 
 " Adjacent duplicate words
 " noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1
@@ -199,16 +222,16 @@ noremap mm :marks<CR>
 noremap <LEADER>,< a<++><ESC>
 
 " insert date and time
-inoremap ,da <c-r>=strftime('%Y-%m-%d')<CR>
-inoremap ,ti <c-r>=strftime('%Y-%m-%d %H:%M:%S')<CR>
+inoremap ,,da <c-r>=strftime('%Y-%m-%d')<CR>
+inoremap ,,ti <c-r>=strftime('%Y-%m-%d %H:%M:%S')<CR>
 
 " ===
 " === Cursor Move
 " ===
 
 " J/K keys for 5 times j/e
-noremap <silent> J 5j
-noremap <silent> K 5k
+" noremap <silent> J 5j
+" noremap <silent> K 5k
 
 " H/L keys: go to the start/end of the line
 noremap <silent> H ^
@@ -285,8 +308,8 @@ cnoremap <M-l> <S-Right>
 " === Window management
 " ===
 " Use <LEADER> + arror keys for moving the cursor around windows
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
-" noremap <LEADER>w <C-w>w
+nnoremap <leader>W :s/\s\+$//<cr>:let @/=''<CR>:nohl<CR>
+" noremap <LEADER>w <C-w>w 
 noremap <LEADER>j <C-w>j
 noremap <LEADER>k <C-w>k
 noremap <LEADER>l <C-w>l
@@ -361,6 +384,11 @@ noremap \s :%s//g<left><left>
 " Auto change directory to current dir
 " autocmd BufEnter * silent! lcd %:p:h
 
+" change work directory to pwd
+func! ChangeWorkDirectory()
+  exec "cd ".expand('%:p:h')
+endfunc
+
 " Compile function
 noremap ,r :call CompileRunGcc()<CR>
 func! CompileRunGcc()
@@ -420,6 +448,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'vim-scripts/TaskList.vim'  " use vimgrep instaed
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'tree-sitter/tree-sitter-python'
 
 " Editor Enhancement
 Plug 'gcmt/wildfire.vim' " Enter to select content.
@@ -445,9 +474,13 @@ Plug 'cohama/agit.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'RRethy/vim-illuminate'
 Plug 'honza/vim-snippets'
-Plug 'tomtom/tcomment_vim'
+" Plug 'tomtom/tcomment_vim'
+Plug 'numToStr/Comment.nvim'
 Plug 'luochen1990/rainbow'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+" Plug 'folke/which-key.nvim'
+Plug 'lambdalisue/suda.vim'
 
 " Taglist
 Plug 'liuchengxu/vista.vim'
@@ -472,11 +505,6 @@ Plug 'mhinz/vim-startify'
 
 " Countbean
 Plug 'nathangrigg/vim-beancount'
-
-autocmd FileType beancount inoremap <c-l> <c-x><c-o>
-" autocmd FileType beancount inoremap . .<C-\><C-O>:AlignCommodity<CR>
-autocmd FileType beancount vnoremap <leader>= :AlignCommodity<CR>
-autocmd FileType beancount nnoremap <leader>= :AlignCommodity<CR>
 
 " ===
 " === markdown
@@ -559,9 +587,17 @@ let g:lightline = {
       \},
       \ }
 " This snippets need to set after plug#end
-" lua << EOF
-" require('bufferline').setup()
-" EOF
+lua << EOF
+-- require('bufferline').setup()
+require('Comment').setup()
+-- local wk = require("which-key")
+-- opts = {prefix="<LEADER>n"}
+-- mappings = {
+--   b = { function() print("bar") end, "Foo" },
+--   f = { "<cmd>:Files<cr>", "find files" }
+--   }
+-- wk.register(mappings, opts)
+EOF
 " let g:lightline#extensions#tabline#enabled = 0
 
 
@@ -609,7 +645,7 @@ nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 " ===
 let g:coc_global_extensions = ['coc-json', 'coc-vimlsp', 'coc-prettier', 'coc-pyright', 'coc-actions', 'coc-explorer', 'coc-translator', 'coc-yank', 'coc-snippets', 'coc-go']
 
-nmap tt :CocCommand explorer<CR>
+" nmap tt :CocCommand explorer<CR>
 nmap ts <Plug>(coc-translator-p)
 nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 
@@ -828,11 +864,14 @@ let g:scrollstatus_size = 15
 " === tcomment_vim
 " ===
 " nnoremap ci cl
-let g:tcomment_textobject_inlinecomment = ''
-nmap <LEADER>cn g>c
-vmap <LEADER>cn g>
-nmap <LEADER>cu g<c
-vmap <LEADER>cu g<
+" let g:tcomment_textobject_inlinecomment = ''
+" nmap <LEADER>cn g>c
+" vmap <LEADER>cn g>
+" nmap <LEADER>cu g<c
+" vmap <LEADER>cu g<
+" for Comment.nvim
+nmap <LEADER>cn gcc
+vmap <LEADER>cn gc
 
 " ===
 " === rainbow
@@ -850,7 +889,7 @@ highlight link RnvimrNormal CursorLine
 nnoremap <silent> R :RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
 let g:rnvimr_action = {
             \ '<C-t>': 'NvimEdit tabedit',
-            \ '<C-x>': 'NvimEdit split',
+            \ '<C-o>': 'NvimEdit split',
             \ '<C-v>': 'NvimEdit vsplit',
             \ 'gw': 'JumpNvimCwd',
             \ 'yw': 'EmitRangerCwd'
@@ -861,7 +900,7 @@ let g:rnvimr_layout = { 'relative': 'editor',
             \ 'col': 0,
             \ 'row': 0,
             \ 'style': 'minimal' }
-let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+let g:rnvimr_presets = [{'width': 0.8, 'height': 0.8}]
 
 " ===
 " === vim-subversive
@@ -928,11 +967,12 @@ let g:startify_bookmarks = [
       \ { 'c': '~/.config/nvim/init.vim' },
       \ { 'rgem': '~/repo/gem_mtn/manage.py' },
       \ { 'rgbp': '~/repo/gbp/manage.py' },
+      \ { 'rnote': '~/repo/notebook/README.md' },
       \ { 'ra': '~/repo' },
       \]
 let g:startify_session_persistence = 1
 let g:startify_session_dir = '~/.config/nvim/session'
-" let g:startify_custon_header = 
+" let g:startify_custon_header =
 " require vim-gitbranch -> itchyny/vim-gitbranch
 " function! GetUniqueSessionName()
 "   let path = fnamemodify(getcwd(), ':~:t')
@@ -944,3 +984,14 @@ let g:startify_session_dir = '~/.config/nvim/session'
 "
 " autocmd User        StartifyReady silent execute 'SLoad '  . GetUniqueSessionName()
 " autocmd VimLeavePre *             silent execute 'SSave! ' . GetUniqueSessionName()
+
+" ===
+" === Beancount
+" ===
+" https://github.com/Akuukis/beancount_interpolate
+" set beancount root
+" let b:beancount_root=""
+autocmd FileType beancount inoremap <c-l> <c-x><c-o>
+" autocmd FileType beancount inoremap . .<C-\><C-O>:AlignCommodity<CR>
+" autocmd FileType beancount vnoremap <leader>= :AlignCommodity<CR>
+autocmd FileType beancount nnoremap <leader>= VG:AlignCommodity<CR>

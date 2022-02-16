@@ -4,7 +4,7 @@ autocmd Filetype markdown inoremap <buffer> ,n ---<Enter><Enter>
 autocmd Filetype markdown inoremap <buffer> ,b **** <++><Esc>F*hi
 autocmd Filetype markdown inoremap <buffer> ,u ~~~~ <++><Esc>F~hi
 autocmd Filetype markdown inoremap <buffer> ,i ** <++><Esc>F*i
-autocmd Filetype markdown inoremap <buffer> ,d `` <++><Esc>F`i
+autocmd Filetype markdown inoremap <buffer> ,d <SPACE>`` <++><Esc>F`i
 autocmd Filetype markdown inoremap <buffer> ,c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
 autocmd Filetype markdown inoremap <buffer> ,t - [ ] 
 autocmd Filetype markdown inoremap <buffer> ,p ![](<++>) <++><Esc>F[a
@@ -18,7 +18,9 @@ autocmd Filetype markdown imap <buffer> ,v <ESC>[\|}\|]\|i
 
 autocmd Filetype markdown inoremap <buffer> ,f <details><Enter><summary>+</summary><Enter><Enter><++><Enter></details><ESC>3kcl
 " autocmd Filetype markdown imap <buffer> ,m [[todo]] -> [todo](todo)<ESC>^/todo<CR>;nohl<CR>
-autocmd Filetype markdown imap <buffer> ,m [[todo]] -> <a href="todo">todo</a><ESC>^/todo<CR>;nohl<CR>
+" autocmd Filetype markdown imap <buffer> ,m [[todo]] -> <a href="todo">todo</a><ESC>^/todo<CR>;nohl<CR>
+autocmd Filetype markdown imap <buffer> ,m [[todo]] -> <a href="todo">aa</a><ESC>^/todo<CR>;nohl<CR>
+autocmd FileType markdown inoremap <buffer> ,[ [[]] <++><Esc>F[a
 
 " function TapAllColumn(...)
 "   echo "get count: " a:1
