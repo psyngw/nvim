@@ -1,14 +1,12 @@
 {
-  "coc.preferences.hoverTarget": "preview",
-  "coc.preferences.enableFloatHighlight": true,
-  "coc.preferences.snippetStatusText": "Ⓢ ",
   "coc.preferences.extensionUpdateCheck": "daily",
+  "suggest.autoTrigger": "always",
+  "coc.source.around.enable": false,
+  "coc.source.buffer.enable": false,
   "suggest.noselect": true,
   "suggest.enablePreselect": false,
   "suggest.triggerAfterInsertEnter": true,
-  "suggest.floatEnable": true,
   "suggest.detailField": "preview",
-  "suggest.enablePreview": true,
   "suggest.completionItemKindLabels": {
     "class": "\uf0e8",
     "color": "\ue22b",
@@ -45,17 +43,16 @@
     "python",
     "vue",
     "svelte",
-    "c"
+    "c",
+    "rust"
   ],
   "snippets.ultisnips.directories": ["$HOME/.config/nvim/Ultisnips/"],
-  "diagnostic.signOffset": 1,
   "diagnostic.errorSign": "\uf467",
   "diagnostic.warningSign": "\uf071",
   "diagnostic.infoSign": "\uf129",
   "diagnostic.hintSign": "\uf864",
   "diagnostic.displayByAle": false,
   "diagnostic.refreshOnInsertMode": false,
-  "diagnostic.refreshAfterSave": false,
   "diagnostic.checkCurrentLine": true,
   "diagnostic.virtualTextPrefix": " ❯❯❯ ",
   "diagnostic.virtualText": true,
@@ -66,6 +63,7 @@
   "python.linting.flake8Enabled": false,
   "python.linting.flake8Args": ["--extend-ignore=E501"],
   "python.linting.pylintEnabled": false,
+  // "python.analysis.useLibraryCodeForTypes": false,
   "python.formatting.yapfArgs": [
     "--style",
     "{SPACES_AROUND_POWER_OPERATOR: True, SPACES_BEFORE_COMMENT: 1}"
@@ -75,5 +73,6 @@
     "i": false,
     "<cr>": false,
     "v": "open:vsplit"
-  }
+  },
+  "languageserver": {}
 }

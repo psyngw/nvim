@@ -50,7 +50,11 @@ set indentexpr=
 set foldmethod=indent
 set foldlevel=99
 set foldenable
+" -=o: cancel comment if o from comment line
 set formatoptions-=tc
+" set formatoptions-=o
+" set formatoptions+=mM
+" autocmd FileType py,rs,vim setlocal formatoptions-=tco
 set splitright
 set splitbelow
 set noshowmode
@@ -177,17 +181,30 @@ noremap <LEADER>tr :!crow <c-r><c-w> -t zh-CN -l zh-CN<CR>
 noremap <LEADER>ts :!crow -l zh-CN 
 
 " vimgrep function for python
+" function! SearchFunc()
+"   " execute "normal yiw"
+"   " execute "vimgrep /\\(class\\)\\|\\(def\\) ".expand('<cword>')."(/ **"
+"   " silent! execute "vimgrep /\\(\\(class\\)\\|\\(def\\)\\|\\(func\\)\\) ".expand('<cword>')."(/ **/*".expand('%:e')
+"   silent! execute "vimgrep /\\(\\(def\\)\\) ".expand('<cword>')."(/ **/*".expand('%:e')
+"   execute "echo getline('.')"
+"   call feedkeys("\<c-o>")
+"   " execute "normal <c-\><c-o>"
+" endfunction
 function! SearchFunc()
-  " execute "normal yiw"
-  " execute "vimgrep /\\(class\\)\\|\\(def\\) ".expand('<cword>')."(/ **"
-  silent! execute "vimgrep /\\(\\(class\\)\\|\\(def\\)\\|\\(func\\)\\) ".expand('<cword>')."(/ **/*".expand('%:e')
+  silent! execute "grep 'def +".expand('<cword>')."' **/*".expand('%:e')
   execute "echo getline('.')"
   call feedkeys("\<c-o>")
-  " execute "normal <c-\><c-o>"
 endfunction
 " TODO optimize speed
 noremap <LEADER>fm :call SearchFunc()<CR>
 " command! -nargs SearchFunc(q-args)
+function! SearchFuncDef()
+  " call CocAction('jumpDefinition')
+  exec "call CocAction('jumpDefinition')"
+  execute "echo getline('.')"
+  call feedkeys("\<c-o>")
+endfunction
+map <LEADER>fp :call SearchFuncDef()<CR>
 
 " Search TODO
 noremap <LEADER>tt :vimgrep /TODO/j %<CR>:cw<CR>
@@ -196,6 +213,9 @@ noremap <LEADER>ta :vimgrep /TODO/j **/*.%:e<CR>:cw<CR>
 " spell check
 noremap <silent> <F11> :set spell!<CR>
 inoremap <silent> <F11> <C-o>:set spell!<CR>
+
+" visual mode for just put
+noremap <LEADER>v V`]
 
 " Adjacent duplicate words
 " noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1
@@ -222,6 +242,7 @@ noremap mm :marks<CR>
 noremap <LEADER>,< a<++><ESC>
 
 " insert date and time
+inoremap ,fda %Y-%m-%d
 inoremap ,,da <c-r>=strftime('%Y-%m-%d')<CR>
 inoremap ,,ti <c-r>=strftime('%Y-%m-%d %H:%M:%S')<CR>
 
@@ -261,9 +282,9 @@ nmap <LEADER>rr <SPACE>r,<SPACE>r'<SPACE>r)I
 
 " move cursor to the begin/end of the line
 " not useful: vim's <C-i> == TAB
-" inoremap <C-a> <ESC>A
-" inoremap <C-i> <ESC>I
-inoremap <C-h> <C-\><C-o>^
+inoremap <C-a> <ESC>I
+inoremap <C-e> <ESC>A
+" inoremap <C-h> <C-\><C-o>^
 
 " Fast to move visiual to midlle of the screen
 inoremap ,z <ESC>zza
@@ -381,6 +402,11 @@ noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
 " find and replace
 noremap \s :%s//g<left><left>
 
+" find and replace to upper or lower
+" noremap \dxx :s/\v/\U\0/g<left><left><left><left><left><left><left>
+noremap \dx :s/\v/\U\0/g<left><left><left><left><left><left><left>
+noremap \xx :s/\v/\L\0/g<left><left><left><left><left><left><left>
+
 " Auto change directory to current dir
 " autocmd BufEnter * silent! lcd %:p:h
 
@@ -415,6 +441,7 @@ func! CompileRunGcc()
         silent! exec "!".g:mkdp_browser." % &"
     elseif &filetype == 'markdown'
         exec "InstantMarkdownPreview"
+        " silent! exec "!sleep 0.5 && setsid -f surf localhost:8090"
     elseif &filetype == 'tex'
         silent! exec "VimtexStop"
         silent! exec "VimtexCompile"
@@ -429,6 +456,11 @@ func! CompileRunGcc()
         set splitbelow
         :sp
         :term go run .
+    elseif &filetype == 'rust'
+        " set splitbelow
+        " :sp
+        " :term cargo run
+        exec "CocCommand rust-analyzer.run"
     endif
 endfunc
 
@@ -448,7 +480,8 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'vim-scripts/TaskList.vim'  " use vimgrep instaed
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plug 'tree-sitter/tree-sitter-python'
+" Plug 'tree-sitter/tree-sitter-python'
+" Plug 'tree-sitter/tree-sitter-cpp'
 
 " Editor Enhancement
 Plug 'gcmt/wildfire.vim' " Enter to select content.
@@ -479,6 +512,9 @@ Plug 'numToStr/Comment.nvim'
 Plug 'luochen1990/rainbow'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
+" Plug 'Shougo/echodoc.vim'
+" let g:echodoc_enable_at_startup=1
+" set cmdheight=2
 " Plug 'folke/which-key.nvim'
 Plug 'lambdalisue/suda.vim'
 
@@ -505,6 +541,9 @@ Plug 'mhinz/vim-startify'
 
 " Countbean
 Plug 'nathangrigg/vim-beancount'
+
+" c++
+" Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " ===
 " === markdown
@@ -643,11 +682,15 @@ nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 " ===
 " === coc
 " ===
-let g:coc_global_extensions = ['coc-json', 'coc-vimlsp', 'coc-prettier', 'coc-pyright', 'coc-actions', 'coc-explorer', 'coc-translator', 'coc-yank', 'coc-snippets', 'coc-go']
+let g:coc_global_extensions = ['coc-json', 'coc-vimlsp', 'coc-prettier', 'coc-pyright', 'coc-actions', 'coc-explorer', 'coc-translator', 'coc-yank', 'coc-snippets', 'coc-go', 'coc-rust-analyzer', 'coc-clangd']
 
 " nmap tt :CocCommand explorer<CR>
 nmap ts <Plug>(coc-translator-p)
 nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+
+" call showSignatureHelp
+inoremap <c-l> <C-\><c-o>:call CocActionAsync('showSignatureHelp')<cr>
+nnoremap <silent> <c-l> :call CocActionAsync('doHover')<cr>
 
 " TextEdit might fail if hidden is not set.
 " set hidden
@@ -678,13 +721,19 @@ endif
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
+" function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
@@ -713,15 +762,24 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
-nnoremap <silent> <LEADER>w :call <SID>show_documentation()<CR>
+" nnoremap <silent> <LEADER>w :call <SID>show_documentation()<CR>
+"
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   elseif (coc#rpc#ready())
+"     call CocActionAsync('doHover')
+"   else
+"     execute '!' . &keywordprg . " " . expand('<cword>')
+"   endif
+" endfunction
+nnoremap <silent> <LEADER>w :call ShowDocumentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+    call feedkeys('K', 'in')
   endif
 endfunction
 
@@ -918,8 +976,11 @@ let g:instant_markdown_autostart = 0
 " let g:instant_markdown_allow_external_content = 0
 " let g:instant_markdown_mathjax = 1
 let g:instant_markdown_autoscroll = 1
-let g:mkdp_browser = 'google-chrome-stable'
-let g:mkdp_browserfunc = 'open '
+" let g:mkdp_browser = 'google-chrome-stable'
+let g:mkdp_browser = 'surf'
+let g:instant_markdown_browser = 'surf'
+" let g:mkdp_browserfunc = 'open '
+" let g:mkdp_browserfunc = 'localhost:8090'
 let g:instant_markdown_logfile = '/home/warren/test.log'
 
 " ===
@@ -969,6 +1030,7 @@ let g:startify_bookmarks = [
       \ { 'rgbp': '~/repo/gbp/manage.py' },
       \ { 'rnote': '~/repo/notebook/README.md' },
       \ { 'ra': '~/repo' },
+      \ { 'rime': '~/.config/ibus/rime/flypy_user.txt' },
       \]
 let g:startify_session_persistence = 1
 let g:startify_session_dir = '~/.config/nvim/session'
@@ -995,3 +1057,19 @@ autocmd FileType beancount inoremap <c-l> <c-x><c-o>
 " autocmd FileType beancount inoremap . .<C-\><C-O>:AlignCommodity<CR>
 " autocmd FileType beancount vnoremap <leader>= :AlignCommodity<CR>
 autocmd FileType beancount nnoremap <leader>= VG:AlignCommodity<CR>
+
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --hidden
+endif
+
+" ===
+" === nvim-treesitter
+" ===
+lua << EOF
+require('nvim-treesitter.configs').setup{
+highlight = {
+  enable = true,
+  additional_vim_regex_highlighting = false,
+  }
+}
+EOF
