@@ -39,3 +39,30 @@ done_count = count = 0
 all_count = ${1:datas.count()}
 ${0}
 endsnippet
+
+snippet timec
+time.strftime(${1:'%Y-%m-%d'}, ${2:time.localtime(time.time())})
+endsnippet
+
+snippet jsonload
+with open(f"${1:filename}", 'r') as f:
+		${2:data} = json.load(f)
+$0
+endsnippet
+
+snippet jsondump
+with open(f"${1:filename}", 'w+') as f:
+		json.dump(${2:data}, f, indent=4)
+$0
+endsnippet
+
+snippet timecount
+b = datetime.datetime.now()
+print(f"begin {b:%Y-%m-%d %T}")
+begin = time.time()
+
+$0
+
+end = time.time()
+print(f"begin {b:%Y-%m-%d %T}\nend {datetime.datetime.now():%Y-%m-%d %T}\n{(end - begin) / 3600:.2f} hours")
+endsnippet
