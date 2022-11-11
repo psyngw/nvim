@@ -1,3 +1,25 @@
+" nnoremap <expr><tab> col('.') == 1 ? '$' : '0'
+" 这里用 tab 键会屏蔽掉 c-i 的跳转，在 vim 里这两键是等效的
+nnoremap <expr><c-h> col('.') == strlen(getline('.')) ? '0' : '$'
+nnoremap x "_x
+
+" :h key-notation
+" 上下移动行 （∆为j的alt转义 ˚为k的alt转义）
+nnoremap <silent><m-]> :m .+1<CR>
+nnoremap <silent><m-[> :m .-2<CR>
+" VISUAL模式下 上下移动代码块
+vnoremap <silent><m-]> :m '>+1<CR>gv
+vnoremap <silent><m-[> :m '<-2<CR>gv
+" SELECT模式下 移动选中的代码行/块
+snoremap <silent><m-]> <c-v>v:m '>+1<CR>gv
+snoremap <silent><m-[> <c-v>v:m '<-2<CR>gv
+
+" 上下新增空行 两种方式
+" nnoremap [<space> :<c-u>put! =repeat(nr2char(10), v:count1)<cr>
+" nnoremap ]<space> :<c-u>put =repeat(nr2char(10), v:count1)<cr>
+nnoremap ]<space> o<esc>k
+nnoremap [<space> O<esc>j
+
 " __  ____   __  _   ___     _____ __  __ ____   ____
 " "|  \/  \ \ / / | \ | \ \   / /_ _|  \/  |  _ \ / ___|
 " "| |\/| |\ V /  |  \| |\ \ / / | || |\/| | |_) | |
@@ -149,6 +171,7 @@ autocmd BufNewFile * normal G
 " Set <LEADER> as <SPACE>, ; as :
 let mapleader=" "
 noremap ; :
+cnoremap q1 q!
 
 " Save & quit
 noremap Q :q<CR>
@@ -239,10 +262,11 @@ noremap ,P "+P
 noremap mm :marks<CR>
 
 " insert <++>
-noremap <LEADER>,< a<++><ESC>
+noremap <LEADER>< a<++><ESC>
 
 " insert date and time
 inoremap ,fda %Y-%m-%d
+inoremap ,fdc {datetime.datetime.now():%Y-%m-%d}
 inoremap ,,da <c-r>=strftime('%Y-%m-%d')<CR>
 inoremap ,,ti <c-r>=strftime('%Y-%m-%d %H:%M:%S')<CR>
 
@@ -253,6 +277,10 @@ inoremap ,,ti <c-r>=strftime('%Y-%m-%d %H:%M:%S')<CR>
 " J/K keys for 5 times j/e
 " noremap <silent> J 5j
 " noremap <silent> K 5k
+
+" up/down for browsing
+nnoremap <up> kzz
+nnoremap <down> jzz
 
 " H/L keys: go to the start/end of the line
 noremap <silent> H ^
@@ -295,6 +323,8 @@ inoremap ,e <ESC>/<++><CR>:nohlsearch<CR>c4l
 " jump to the begin/end of the line
 " inoremap <C-l>l <ESC>A
 " inoremap <C-l>h <ESC>I
+inoremap <M-l> <ESC>A
+inoremap <M-h> <ESC>I
 
 " fix <C-o> with <C-l>
 " inoremap <C-l> <C-\><C-o>
@@ -303,7 +333,7 @@ inoremap ,e <ESC>/<++><CR>:nohlsearch<CR>c4l
 " inoremap <C-o> <ESC>o
 
 " delete privious word , use C-w if u like
-inoremap ,b <ESC>bcw
+" inoremap ,b <ESC>bcw
 
 " ===
 " === Command Mode Cursor Movement
@@ -352,6 +382,8 @@ noremap sok :res -5<CR>
 " noremap soh :vertical resize+5<CR>
 noremap sol :vertical resize-
 noremap soh :vertical resize+
+nnoremap + :vertical resize+2<CR>
+nnoremap _ :vertical resize-2<CR>
 
 " Place the two screens up and down
 " noremap sh <C-w>t<C-w>K
@@ -545,6 +577,9 @@ Plug 'nathangrigg/vim-beancount'
 " c++
 " Plug 'jackguo380/vim-lsp-cxx-highlight'
 
+" show mark
+Plug 'yaocccc/vim-showmarks'
+
 " ===
 " === markdown
 " ===
@@ -569,8 +604,9 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " color monokai
 " color seoul256-white
 " color seoul256
-let g:tokyonight_style = "day"
-color tokyonight
+" let g:tokyonight_style = "day"
+" color tokyonight
+colorscheme tokyonight-day
 " set background=dark
 
 " ================================= Plug Settings =======================================
@@ -689,8 +725,8 @@ nmap ts <Plug>(coc-translator-p)
 nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 
 " call showSignatureHelp
-inoremap <c-l> <C-\><c-o>:call CocActionAsync('showSignatureHelp')<cr>
-nnoremap <silent> <c-l> :call CocActionAsync('doHover')<cr>
+inoremap <a-w> <C-\><c-o>:call CocActionAsync('showSignatureHelp')<cr>
+nnoremap <silent> <a-w> :call CocActionAsync('doHover')<cr>
 
 " TextEdit might fail if hidden is not set.
 " set hidden
@@ -831,10 +867,10 @@ augroup end
 
 " " Remap <C-f> and <C-b> for scroll float windows/popups.
 " " Note coc#float#scroll works on neovim >= 0.4.0 or vim >= 8.2.0750
-" nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-" nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-" inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-" inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
 
 " " NeoVim-only mapping for visual mode scroll
 " " Useful on signatureHelp after jump placeholder of snippets expansion
@@ -885,7 +921,7 @@ nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " ===
 " === coc-snippets
 " ===
-imap <C-j> <Plug>(coc-snippets-expand)
+imap <C-l> <Plug>(coc-snippets-expand)
 " vmap <C-j> <Plug>(coc-snippets-select)
 let g:coc_snippet_next = '<c-j>'
 let g:coc_snippet_prev = '<c-k>'
