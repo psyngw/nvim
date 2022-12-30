@@ -69,7 +69,8 @@ set viewoptions=cursor,folds,slash,unix
 set wrap
 set tw=0
 set indentexpr=
-set foldmethod=indent
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 set foldlevel=99
 set foldenable
 " -=o: cancel comment if o from comment line
@@ -110,6 +111,8 @@ set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 "set fencs=utf8,gbk,gb2312,gb18030
 autocmd InsertEnter * :set norelativenumber number
 autocmd InsertLeave * :set relativenumber
+
+set diffopt+=vertical
 
 " ===
 " " === Terminal Behaviors
@@ -493,6 +496,8 @@ func! CompileRunGcc()
         " :sp
         " :term cargo run
         exec "CocCommand rust-analyzer.run"
+    elseif &filetype == 'lua'
+        exec "!lua %"
     endif
 endfunc
 
@@ -608,6 +613,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " color tokyonight
 colorscheme tokyonight-day
 " set background=dark
+nnoremap <leader>b :highlight Normal guifg=252 guibg=none<CR>
 
 " ================================= Plug Settings =======================================
 
@@ -714,6 +720,7 @@ nnoremap <LEADER>gh :GitGutterPreviewHunk<CR>
 nnoremap <LEADER>gu :GitGutterUndoHunk<CR>
 nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
 nnoremap <LEADER>g= :GitGutterNextHunk<CR>
+nnoremap <LEADER>gd :GitGutterDiffOrig<CR>
 
 " ===
 " === coc
