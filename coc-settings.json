@@ -1,4 +1,12 @@
 {
+  "hover.floatConfig": { "border": true, "focusable": true },
+  "suggest.floatConfig": { "border": true },
+  "diagnostic.floatConfig": { "border": true },
+  "signature.floatConfig": { "border": true },
+  // "hover.floatConfig": { "border": true, "rounded": true, "focusable": true },
+  // "suggest.floatConfig": { "border": true, "rounded": true },
+  // "diagnostic.floatConfig": { "border": true, "rounded": true },
+  // "signature.floatConfig": { "border": true, "rounded": true },
   "coc.preferences.hoverTarget": "preview",
   "coc.preferences.enableFloatHighlight": true,
   "coc.preferences.snippetStatusText": "Ⓢ ",
@@ -44,10 +52,12 @@
     "json",
     "python",
     "vue",
-    "svelte",
-    "c"
+    "c",
+    "cpp",
+    "lua",
+    "go"
   ],
-  "snippets.ultisnips.directories": ["$HOME/.config/nvim/Ultisnips/"],
+  "snippets.ultisnips.directories": ["$HOME/.config/nvim/snippets/Ultisnips/"],
   "diagnostic.signOffset": 1,
   "diagnostic.errorSign": "\uf467",
   "diagnostic.warningSign": "\uf071",
@@ -58,7 +68,7 @@
   "diagnostic.refreshAfterSave": false,
   "diagnostic.checkCurrentLine": true,
   "diagnostic.virtualTextPrefix": " ❯❯❯ ",
-  "diagnostic.virtualText": true,
+  "diagnostic.virtualText": false,
   "codeLens.enable": true,
   "pyright.enable": true,
   "python.formatting.provider": "yapf",
@@ -75,5 +85,6 @@
     "i": false,
     "<cr>": false,
     "v": "open:vsplit"
-  }
+  },
+  "Lua.telemetry.enable": false
 }
