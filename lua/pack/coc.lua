@@ -20,25 +20,25 @@ function M.config()
   G.cmd("hi! link CocPum Pmenu")
   G.cmd("hi! link CocMenuSel PmenuSel")
   function _G.show_docs()
-    local cw = vim.fn.expand('<cword>')
-    if vim.fn.index({ 'vim', 'help' }, vim.bo.filetype) >= 0 then
-      vim.api.nvim_command('h ' .. cw)
-    elseif vim.api.nvim_eval('coc#rpc#ready()') then
-      vim.fn.CocActionAsync('doHover')
+    local cw = G.fn.expand('<cword>')
+    if G.fn.index({ 'vim', 'help' }, G.bo.filetype) >= 0 then
+      G.api.nvim_command('h ' .. cw)
+    elseif G.api.nvim_eval('coc#rpc#ready()') then
+      G.fn.CocActionAsync('doHover')
     else
-      vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
+      G.api.nvim_command('!' .. G.o.keywordprg .. ' ' .. cw)
     end
   end
 
   -- Highlight the symbol and its references on a CursorHold event(cursor is idle)
-  vim.api.nvim_create_augroup("CocGroup", {})
-  vim.api.nvim_create_autocmd("CursorHold", {
+  G.api.nvim_create_augroup("CocGroup", {})
+  G.api.nvim_create_autocmd("CursorHold", {
     group = "CocGroup",
     command = "silent call CocActionAsync('highlight')",
     desc = "Highlight symbol under cursor on CursorHold"
   })
   -- Update signature help on jump placeholder
-  vim.api.nvim_create_autocmd("User", {
+  G.api.nvim_create_autocmd("User", {
     group = "CocGroup",
     pattern = "CocJumpPlaceholder",
     command = "call CocActionAsync('showSignatureHelp')",
@@ -78,8 +78,10 @@ function M.config()
     -- { 'n', '<F4>', "get(g:, 'coc_enabled', 0) == 1 ? ':CocDisable<cr>' : ':CocEnable<cr>'", {silent = true, noremap = true, expr = true} },
     { 'n', '<F9>', ":CocCommand snippets.editSnippets<cr>", { silent = true, noremap = true } },
     -- { 'n', '<c-e>', ":CocList --auto-preview diagnostics<cr>", {silent = true} },
-    { 'n', 'mm', "<Plug>(coc-translator-p)", { silent = true } },
-    { 'v', 'mm', "<Plug>(coc-translator-pv)", { silent = true } },
+    { 'n', 'ts', "<Plug>(coc-translator-p)", { silent = true } },
+    { 'v', 'ts', "<Plug>(coc-translator-pv)", { silent = true } },
+    { 'n', '<LEADER>-', "<Plug>(coc-diagnostic-prev)", { silent = true } },
+    { 'n', '<LEADER>=', "<Plug>(coc-diagnostic-next)", { silent = true } },
     -- { 'n', '(', "<Plug>(coc-git-prevchunk)", {silent = true} },
     -- { 'n', ')', "<Plug>(coc-git-nextchunk)", {silent = true} },
     -- { 'n', '\\g', ":call coc#config('git.addGBlameToVirtualText',  !get(g:coc_user_config, 'git.addGBlameToVirtualText', 0)) | call nvim_buf_clear_namespace(bufnr(), -1, line('.') - 1, line('.'))<cr>", {silent = true} },

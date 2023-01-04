@@ -17,7 +17,7 @@ function M.config()
   -- autocmd BufWritePost * GitGutter
   G.map({
     { 'n', '<LEADER>gf', ':GitGutterFold<CR>', {} },
-    { 'n', '<LEADER>gh', ':GitGutterPreviewHunk<CR>', {} },
+    { 'n', '<LEADER>gh', ':GitGutterPreviewHunk<CR>:e<CR>', { silent = true } },
     { 'n', '<LEADER>gu', ':GitGutterUndoHunk<CR>', {} },
     { 'n', '<LEADER>gd', ':GitGutterDiffOrig<CR>', {} },
     { 'n', '(', ':GitGutterPrevHunk<CR>', {} },

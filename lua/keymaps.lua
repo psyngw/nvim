@@ -21,10 +21,18 @@ G.map({
   { 'n', '<LEADER><CR>', ':nohlsearch<CR>', nore },
   { 'n', '<LEADER>fw', '/\\<\\><left><left>', nore },
   { 'i', '<c-f>', '<Esc>gUiw`]a', nore },
+  { 'n', '<leader>mm', ":<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>",
+    nore },
 
   -- " translate using crow-translate
-  -- noremap <LEADER>tr :!crow <c-r><c-w> -t zh-CN -l zh-CN<CR>
-  -- noremap <LEADER>ts :!crow -l zh-CN
+  { 'n', '<LEADER>tr', ':!crow <c-r><c-w> -t zh-CN -l zh-CN<CR>', nore },
+  { 'n', '<LEADER>ts', ':!crow -l zh-CN', nore },
+
+  -- Navigate
+  { 'n', 'J', '5j', nore },
+  { 'n', 'K', '5k', nore },
+  { 'v', 'J', '5j', nore },
+  { 'v', 'K', '5k', nore },
 
   -- Lazygit
   { 'n', '<c-g>', ':tabe<CR>:-tabmove<CR>:term lazygit<CR>', nore },
@@ -74,21 +82,23 @@ G.map({
   { 'n', '<LEADER>l', '<c-w>l', nore },
   { 'n', '<LEADER>k', '<c-w>k', nore },
   { 'n', '<LEADER>j', '<c-w>j', nore },
-  { 'n', '<c-Space>', '<c-w>w', nore },
-  -- { 'n', 's=',          '<c-w>=',           nore },
-  { 'n', '<m-.>', "winnr() <= winnr('$') - winnr() ? '<c-w>10>' : '<c-w>10<'", { noremap = true, expr = true } },
-  { 'n', '<m-,>', "winnr() <= winnr('$') - winnr() ? '<c-w>10<' : '<c-w>10>'", { noremap = true, expr = true } },
+  { 'n', '<LEADER>w', '<c-w>w', nore },
+  { 'n', 's=', '<c-w>=', nore },
   { 'n', 'sk', ':set nosplitbelow<CR>:split<CR>:set splitbelow<CR>', nore },
   { 'n', 'sj', ':set splitbelow<CR>:split<CR>', nore },
   { 'n', 'sh', ':set nosplitright<CR>:vsplit<CR>:set splitright<CR>', nore },
   { 'n', 'sl', ':set splitright<CR>:vsplit<CR>', nore },
+  { 'n', '<up>', ':res +5<CR>', nore },
+  { 'n', '<down>', ':res -5<CR>', nore },
+  { 'n', '<right>', "winnr() <= winnr('$') - winnr() ? '<c-w>10>' : '<c-w>10<'", { noremap = true, expr = true } },
+  { 'n', '<left>', "winnr() <= winnr('$') - winnr() ? '<c-w>10<' : '<c-w>10>'", { noremap = true, expr = true } },
 
   -- Tab management
   { 'n', 'tn', ':tabe<CR>', nore },
   { 'n', 'th', ':-tabnext<CR>', nore },
   { 'n', 'tl', ':+tabnext<CR>', nore },
 
-  { 'n', '<LEADER><LEADER>', '<Esc>/n<CR>:nohlsearch<CR>c4l', nore },
+  { 'n', '<LEADER><LEADER>', '<Esc>/<++><CR>:nohlsearch<CR>c4l', nore },
 
   { 'n', '<LEADER>/', ':set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>', nore },
 
@@ -270,8 +280,8 @@ G.cmd([[
         call add(nls, cl)
       endfor
       let res = join(nls, a:sep)
-      if a:0 == 1
-        let res = a:1[0] . res . a:1[1]
+      if a:0 >= 1
+        let res = a:1[0] . res . a:1[1] . (a:0 == 2 ? a:2 : '')
       endif
       call SetPline(res, flag)
   endfunc
