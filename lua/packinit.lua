@@ -81,6 +81,7 @@ require('packer').startup({
     require('pack/lualine').config()
     use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true },
       config = "require('pack/lualine').setup()" }
+
     -- Comment
     require('pack/comment').config()
     use { 'tomtom/tcomment_vim', config = "require('pack/comment').setup()" }
@@ -96,6 +97,10 @@ require('packer').startup({
     -- Startup
     require('pack/startify').config()
     use { 'mhinz/vim-startify', config = "require('pack/startify').setup()" }
+
+    -- Motion
+    require('pack/leap').config()
+    use { 'ggandor/leap.nvim', config = "require('pack/leap').setup()" }
 
     require('pack/psyngw').config()
     use { 'tpope/vim-surround' }
