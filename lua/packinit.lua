@@ -82,7 +82,7 @@ require('packer').startup({
 
     -- 状态栏 & 标题栏
     require('pack/lualine').config()
-    use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+    use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true },
       config = "require('pack/lualine').setup()" }
 
     require('pack/barbar').config()
