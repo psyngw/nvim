@@ -96,6 +96,8 @@ require('packer').startup({
     -- Theme
     require('pack/tokyonight').config()
     use { 'folke/tokyonight.nvim', config = "require('pack/tokyonight').setup()" }
+    use { 'brenoprata10/nvim-highlight-colors', config = "require('nvim-highlight-colors').setup{}" }
+    use { 'xiyaowong/nvim-transparent', config = "require('transparent').setup{}" }
 
     -- InterestingWords
     require('pack/vim-interestingwords').config()

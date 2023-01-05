@@ -6,8 +6,13 @@ function M.config()
 end
 
 function M.setup()
+  require('tokyonight').setup {
+    style = "day",
+    lualine_bold = true,
+    -- transparent = true -- use 'xiyaowong/nvim-transparent' instead
+  }
   G.cmd([[
-  colorscheme tokyonight-day
+    colorscheme tokyonight-day
   ]])
 end
 
