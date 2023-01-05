@@ -21,6 +21,9 @@ require('packer').startup({
     -- 启动时间分析
     use { "dstein64/vim-startuptime", cmd = "StartupTime" }
 
+    -- icons
+    use { "nvim-tree/nvim-web-devicons" }
+
     -- 中文help doc
     use { 'yianwillis/vimcdoc', event = 'VimEnter' }
 
@@ -81,6 +84,10 @@ require('packer').startup({
     require('pack/lualine').config()
     use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true },
       config = "require('pack/lualine').setup()" }
+
+    require('pack/barbar').config()
+    use { 'romgrk/barbar.nvim', requires = 'nvim-tree/nvim-web-devicons',
+      config = "require('pack/barbar').setup()" }
 
     -- Comment
     require('pack/comment').config()
