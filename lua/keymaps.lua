@@ -3,104 +3,98 @@ local G = require('G')
 local nore = { noremap = true }
 
 G.map({
-  { 'n', ';', ':', nore },
-  { 'v', ';', ':', nore },
-  { 'n', 'Q', ':q<CR>', nore },
-  { 'n', '<c-q>', ':q!<CR>', nore },
-  { 'n', 'S', ':w<CR>', nore },
+  { 'n', ';',            ':',                              nore },
+  { 'v', ';',            ':',                              nore },
+  { 'n', 'Q',            ':q<CR>',                         nore },
+  { 'n', '<c-q>',        ':q!<CR>',                        nore },
+  -- ":noautocmd w" to save without autocmd like formatOnSave
+  { 'n', '<leader>S',    ':w<CR>',                         nore },
+  { 'n', 'S',            ':noa w<CR>',                     nore },
   -- { 'n', 's',           '<nop>',   {} },
-
-  { 'n', '<LEADER>rc', ':e ~/.config/nvim/init.vim<CR>', nore },
-
-  { 'n', 'Y', 'y$', nore },
-  { 'v', 'Y', '"+y', nore },
-
-  { 'n', '<', '<<', nore },
-  { 'n', '>', '>>', nore },
-
-  { 'n', '<LEADER><CR>', ':nohlsearch<CR>', nore },
-  { 'n', '<LEADER>fw', '/\\<\\><left><left>', nore },
-  { 'i', '<c-f>', '<Esc>gUiw`]a', nore },
+  { 'v', '<leader>y',    ':w! ~/.cache/.tt<CR>',           nore },
+  { 'n', '<leader>y',    ':r ~/.cache/.tt<CR>',            nore },
+  { 'n', '<LEADER>rc',   ':e ~/.config/nvim/init.lua<CR>', nore },
+  { 'n', 'Y',            'y$',                             nore },
+  { 'v', 'Y',            '"+y',                            nore },
+  { 'n', '<',            '<<',                             nore },
+  { 'n', '>',            '>>',                             nore },
+  { 'n', '<LEADER><CR>', ':nohlsearch<CR>',                nore },
+  { 'n', '<LEADER>fw',   '/\\<\\><left><left>',            nore },
+  { 'i', '<c-f>',        '<Esc>gUiw`]a',                   nore },
   { 'n', '<leader>mm', ":<c-u><c-r><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>",
     nore },
 
   -- " translate using crow-translate
-  { 'n', '<LEADER>tr', ':!crow <c-r><c-w> -t zh-CN -l zh-CN<CR>', nore },
-  { 'n', '<LEADER>ts', ':!crow -l zh-CN', nore },
+  { 'n', '<LEADER>tr',       ':!crow <c-r><c-w> -t zh-CN -l zh-CN<CR>',                   nore },
+  { 'n', '<LEADER>ts',       ':!crow -l zh-CN',                                           nore },
 
   -- Navigate
-  { 'n', 'J', '5j', nore },
-  { 'n', 'K', '5k', nore },
-  { 'v', 'J', '5j', nore },
-  { 'v', 'K', '5k', nore },
+  { 'n', 'J',                '5j',                                                        nore },
+  { 'n', 'K',                '5k',                                                        nore },
+  { 'v', 'J',                '5j',                                                        nore },
+  { 'v', 'K',                '5k',                                                        nore },
 
   -- Lazygit
-  { 'n', '<c-g>', ':tabe<CR>:-tabmove<CR>:term lazygit<CR>', nore },
+  { 'n', '<c-g>',            ':tabe<CR>:-tabmove<CR>:term lazygit<CR>',                   nore },
 
   -- find and replace/delete
-  { 'n', '\\s', ':<c-u>%s/\\v//gc<left><left><left><left>', nore },
-  { 'n', '\\d', ':g//d<left><left>', nore },
-  { 'v', '\\s', ':s/\\v//gc<left><left><left><left>', nore },
-  { 'n', '<LEADER>W', ":s/\\s\\+$//<cr>:let @/=''<CR>:nohl<CR>", nore },
+  { 'n', '\\s',              ':<c-u>%s/\\v//gc<left><left><left><left>',                  nore },
+  { 'n', '\\d',              ':g//d<left><left>',                                         nore },
+  { 'v', '\\s',              ':s/\\v//gc<left><left><left><left>',                        nore },
+  { 'n', '<LEADER>W',        ":s/\\s\\+$//<cr>:let @/=''<CR>:nohl<CR>",                   nore },
 
   -- delete without reg store
-  { 'n', '<bs>', '"_ciw', nore },
-  { 'v', '<BS>', '"_d', nore },
-  { 'n', 'x', '"_x', nore },
-  { 'v', 'x', '"_x', nore },
-  { 'n', 'Y', 'y$', nore },
-  { 'v', 'c', '"_c', nore },
-  { 'v', 'p', 'pgvy', nore },
-  { 'v', 'P', 'Pgvy', nore },
-
-  { 'i', '<c-a>', '<Esc>I', nore },
-  { 'i', '<c-e>', '<Esc>A', nore },
-
-  { 'i', '<m-o>', '<Esc>o', nore },
-  { 'i', '<m-O>', '<Esc>O', nore },
-  { 'n', '<m-d>', '"_diw', nore },
-  { 'n', '<m-r>', '"_ciw', nore },
-
-  { 'n', 'gV', "V']", nore },
-
-  { 'i', ',z', '<ESC>zza', nore },
-  { 'i', ',e', '<ESC>/<++><CR>:nohlsearch<CR>c4l', nore },
+  { 'n', '<bs>',             '"_ciw',                                                     nore },
+  { 'v', '<BS>',             '"_d',                                                       nore },
+  { 'n', 'x',                '"_x',                                                       nore },
+  { 'v', 'x',                '"_x',                                                       nore },
+  { 'n', 'Y',                'y$',                                                        nore },
+  { 'v', 'c',                '"_c',                                                       nore },
+  { 'v', 'p',                'pgvy',                                                      nore },
+  { 'v', 'P',                'Pgvy',                                                      nore },
+  { 'i', '<c-a>',            '<Esc>I',                                                    nore },
+  { 'i', '<c-e>',            '<Esc>A',                                                    nore },
+  { 'i', '<m-o>',            '<Esc>o',                                                    nore },
+  { 'i', '<m-O>',            '<Esc>O',                                                    nore },
+  { 'n', '<m-d>',            '"_diw',                                                     nore },
+  { 'n', '<m-r>',            '"_ciw',                                                     nore },
+  { 'n', 'gV',               "V']",                                                       nore },
+  { 'i', ',z',               '<ESC>zza',                                                  nore },
+  { 'i', ',e',               '<ESC>/<++><CR>:nohlsearch<CR>c4l',                          nore },
 
   -- command keymaps
   -- { 'c', '<up>',        '<c-p>',   nore },
   -- { 'c', '<down>',      '<c-n>',   nore },
-  { 'c', '<c-a>', '<home>', nore },
-  { 'c', '<c-e>', '<end>', nore },
-  { 'c', '<c-j>', '<down>', nore },
-  { 'c', '<c-k>', '<up>', nore },
-  { 'c', '<c-h>', '<left>', nore },
-  { 'c', '<c-l>', '<right>', nore },
-  { 'c', 'q1', 'q!', nore },
+  { 'c', '<c-a>',            '<home>',                                                    nore },
+  { 'c', '<c-e>',            '<end>',                                                     nore },
+  { 'c', '<c-j>',            '<down>',                                                    nore },
+  { 'c', '<c-k>',            '<up>',                                                      nore },
+  { 'c', '<c-h>',            '<left>',                                                    nore },
+  { 'c', '<c-l>',            '<right>',                                                   nore },
+  { 'c', 'q1',               'q!',                                                        nore },
 
   -- Window management
-  { 'n', '<LEADER>h', '<c-w>h', nore },
-  { 'n', '<LEADER>l', '<c-w>l', nore },
-  { 'n', '<LEADER>k', '<c-w>k', nore },
-  { 'n', '<LEADER>j', '<c-w>j', nore },
-  { 'n', '<LEADER>w', '<c-w>w', nore },
-  { 'n', 's=', '<c-w>=', nore },
-  { 'n', 'sk', ':set nosplitbelow<CR>:split<CR>:set splitbelow<CR>', nore },
-  { 'n', 'sj', ':set splitbelow<CR>:split<CR>', nore },
-  { 'n', 'sh', ':set nosplitright<CR>:vsplit<CR>:set splitright<CR>', nore },
-  { 'n', 'sl', ':set splitright<CR>:vsplit<CR>', nore },
-  { 'n', '<up>', ':res +5<CR>', nore },
-  { 'n', '<down>', ':res -5<CR>', nore },
-  { 'n', '<right>', "winnr() <= winnr('$') - winnr() ? '<c-w>10>' : '<c-w>10<'", { noremap = true, expr = true } },
-  { 'n', '<left>', "winnr() <= winnr('$') - winnr() ? '<c-w>10<' : '<c-w>10>'", { noremap = true, expr = true } },
+  { 'n', '<LEADER>h',        '<c-w>h',                                                    nore },
+  { 'n', '<LEADER>l',        '<c-w>l',                                                    nore },
+  { 'n', '<LEADER>k',        '<c-w>k',                                                    nore },
+  { 'n', '<LEADER>j',        '<c-w>j',                                                    nore },
+  { 'n', '<LEADER>w',        '<c-w>w',                                                    nore },
+  { 'n', 's=',               '<c-w>=',                                                    nore },
+  { 'n', 'sk',               ':set nosplitbelow<CR>:split<CR>:set splitbelow<CR>',        nore },
+  { 'n', 'sj',               ':set splitbelow<CR>:split<CR>',                             nore },
+  { 'n', 'sh',               ':set nosplitright<CR>:vsplit<CR>:set splitright<CR>',       nore },
+  { 'n', 'sl',               ':set splitright<CR>:vsplit<CR>',                            nore },
+  { 'n', '<m-up>',           ':res +5<CR>',                                               nore },
+  { 'n', '<m-down>',         ':res -5<CR>',                                               nore },
+  { 'n', '<m-right>',        "winnr() <= winnr('$') - winnr() ? '<c-w>10>' : '<c-w>10<'", { noremap = true, expr = true } },
+  { 'n', '<m-left>',         "winnr() <= winnr('$') - winnr() ? '<c-w>10<' : '<c-w>10>'", { noremap = true, expr = true } },
 
   -- Tab management
-  { 'n', 'tn', ':tabe<CR>', nore },
-  { 'n', 'th', ':-tabnext<CR>', nore },
-  { 'n', 'tl', ':+tabnext<CR>', nore },
-
-  { 'n', '<LEADER><LEADER>', '<Esc>/<++><CR>:nohlsearch<CR>c4l', nore },
-
-  { 'n', '<LEADER>/', ':set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>', nore },
+  { 'n', 'tn',               ':tabe<CR>',                                                 nore },
+  { 'n', 'th',               ':-tabnext<CR>',                                             nore },
+  { 'n', 'tl',               ':+tabnext<CR>',                                             nore },
+  { 'n', '<LEADER><LEADER>', '<Esc>/<++><CR>:nohlsearch<CR>c4l',                          nore },
+  { 'n', '<LEADER>/',        ':set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>',        nore },
 
 })
 
@@ -235,20 +229,29 @@ G.cmd([[
 -- yapf format py
 G.map({ { 'n', ',y', ':call YapfFIle()<CR>', nore } })
 G.cmd([[
-  func! YapfFIle()
-  silent exec "!yapf -i %:p"
-  " :term yapf -i %
+func! YapfFIle()
+  silent exec "!yapf -i --style \"{SPACES_BEFORE_COMMENT:1}\" %:p"
+  " :term yapf -i --style "{SPACES_BEFORE_COMMENT:1}" %
+endfunc
+]])
+
+G.map({ { 'v', ',y', ':call YapfFIleV()<CR>', nore } })
+G.cmd([[
+func! YapfFIleV()
+  let start = line("'<")
+  let end = line("'>")
+  silent exec "!yapf -i --style \"{SPACES_BEFORE_COMMENT:1}\" -l ".start."-".end." %:p"
 endfunc
 ]])
 
 -- rr
 G.map({
-  { 'n', "<LEADER>r'", ":call HandleSpaceWords(\"''\", ', ')<cr>", nore },
-  { 'n', "<LEADER>r\"", ":call HandleSpaceWords('\"\"', ', ')<cr>", nore },
-  { 'n', "<LEADER>r}", ":call HandleSpaceWords(\"''\", ', ', '{}')<cr>", nore },
-  { 'n', "<LEADER>r}", ":call HandleSpaceWords(\"''\", ', ', '[]')<cr>", nore },
-  { 'n', "<LEADER>rr", ":call HandleSpaceWords(\"''\", ', ', '')<LEFT><LEFT>", nore },
-  { 'n', "<LEADER>rg", ":call HandleSpaceWordsToggle()<CR>", nore },
+  { 'n', "<LEADER>r'",  ":call HandleSpaceWords(\"''\", ', ')<cr>",             nore },
+  { 'n', "<LEADER>r\"", ":call HandleSpaceWords('\"\"', ', ')<cr>",             nore },
+  { 'n', "<LEADER>r}",  ":call HandleSpaceWords(\"''\", ', ', '{}')<cr>",       nore },
+  { 'n', "<LEADER>r}",  ":call HandleSpaceWords(\"''\", ', ', '[]')<cr>",       nore },
+  { 'n', "<LEADER>rr",  ":call HandleSpaceWords(\"''\", ', ', '')<LEFT><LEFT>", nore },
+  { 'n', "<LEADER>rg",  ":call HandleSpaceWordsToggle()<CR>",                   nore },
 })
 G.cmd([[
   function! GetPline(flag)

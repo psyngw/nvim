@@ -27,6 +27,7 @@ function M.config()
           \ { 'rgem': '~/repo/gem_mtn/manage.py' },
           \ { 'rgbp': '~/repo/gbp/manage.py' },
           \ { 'rnote': '~/repo/notebook/README.md' },
+          \ { 'rime': '~/.config/ibus/rime/flypy_user.txt' },
           \ { 'ra': '~/repo' },
           \]
     let g:startify_session_persistence = 1

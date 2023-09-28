@@ -7,6 +7,8 @@ G.o = vim.o
 G.fn = vim.fn
 G.api = vim.api
 G.cmd = vim.cmd
+G.opt = vim.opt
+G.loop = vim.loop
 
 function G.map(maps)
   for _, map in pairs(maps) do

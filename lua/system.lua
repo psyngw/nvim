@@ -11,6 +11,7 @@ G.g.mapleader = ' '
 -- Base
 G.command([[
     highlight Normal ctermfg=7 ctermbg=NONE cterm=NONE
+    set termguicolors
     set number
     set relativenumber
     set cursorline
@@ -109,6 +110,18 @@ G.command([[
     set undofile
     set undodir=~/.config/nvim/tmp/undo
 ]])
+
+G.cmd([[
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+  set viminfo=!,'10000,<50,s10,h
+]])
+
+G.cmd([[
+  func! ChangeWorkDirectory()
+    exec "lcd ".expand('%:p:h')
+  endfunc
+]])
+
 
 -- G.cmd([[
 --     <++>

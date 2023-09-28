@@ -3,7 +3,7 @@ local M = {}
 
 function M.config()
   G.map({
-    { 'n', 's', '<plug>(SubversiveSubstitute)', { noremap = false } },
+    { 'n', 's',  '<plug>(SubversiveSubstitute)',     { noremap = false } },
     { 'n', 'ss', '<plug>(SubversiveSubstituteLine)', {} },
   })
   -- G.g.rainbow_active = 1
@@ -42,6 +42,7 @@ function M.config()
 
   -- My config
   G.cmd('let g:handle_space_words_enable=0')
+  G.cmd('source ~/.config/nvim/cursor.vim')
 end
 
 function M.setup()

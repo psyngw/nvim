@@ -3,11 +3,13 @@ local M = {}
 
 function M.config()
   -- G.g.VM_theme = 'ocean'
+  G.g.VM_mouse_mappings = 1
   G.g.VM_highlight_matches = 'underline'
   G.g.VM_maps = {
     ['Find Under'] = '<C-n>',
     ['Find Subword Under'] = '<C-n>',
     ['Select All'] = '<C-d>',
+    -- can't work in tmux
     ['Select h'] = '<C-Left>',
     ['Select l'] = '<C-Right>',
     ['Add Cursor Up'] = '<C-Up>',

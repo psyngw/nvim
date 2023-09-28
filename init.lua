@@ -1,3 +1,4 @@
 require('system')
-require('packinit')
+-- require('packinit')
+require('lazyinit')
 require('keymaps')
