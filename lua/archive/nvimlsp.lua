@@ -74,7 +74,7 @@ function M.config()
           end,
         })
 
-        local lspconfig = require('lspconfig')
+        local lspconfig = vim.lsp.config
 
         lspconfig.lua_ls.setup({
           on_attach = function()

@@ -25,8 +25,6 @@ G.command([[
     set list
     set listchars=tab:\|\ ,trail:▫
     set scrolloff=10
-    set ttimeoutlen=0
-    set notimeout
     set viewoptions=cursor,folds,slash,unix
     set wrap
     set tw=0
@@ -108,6 +106,7 @@ G.cmd([[
 -- Undofile
 G.command([[
     set undofile
+    call mkdir(expand('~/.config/nvim/tmp/undo'), 'p')
     set undodir=~/.config/nvim/tmp/undo
 ]])
 
@@ -121,6 +120,30 @@ G.cmd([[
     exec "lcd ".expand('%:p:h')
   endfunc
 ]])
+
+local wsl_release = ''
+local release_file = io.open('/proc/sys/kernel/osrelease', 'r')
+if release_file then
+  wsl_release = release_file:read('*a') or ''
+  release_file:close()
+end
+
+local is_wsl = vim.env.WSL_DISTRO_NAME ~= nil or wsl_release:lower():find('microsoft', 1, true) ~= nil
+local powershell = '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'
+if is_wsl and vim.fn.executable('clip.exe') == 1 and vim.fn.executable(powershell) == 1 then
+  G.g.clipboard = {
+    name = 'WslClipboard',
+    copy = {
+      ['+'] = 'clip.exe',
+      ['*'] = 'clip.exe',
+    },
+    paste = {
+      ['+'] = powershell .. ' -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      ['*'] = powershell .. ' -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    },
+    cache_enabled = 0,
+  }
+end
 
 
 -- G.cmd([[

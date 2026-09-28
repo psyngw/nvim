@@ -45,7 +45,7 @@ function M.config()
 end
 
 function M.setup()
-  require('nvim-treesitter.configs').setup {
+  require('nvim-treesitter').setup {
     -- ensure_installed = "all",
     -- ignore_install = { "swift", "phpdoc" },
     auto_install = true,

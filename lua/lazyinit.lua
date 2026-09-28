@@ -62,20 +62,20 @@ require('lazy').setup({
     event = 'CursorHold'
   },
 
-  {
-    "SirVer/ultisnips",
-    lazy = false,
-    dependencies = {
-      "honza/vim-snippets",
-    },
-    config = function()
-      vim.g.UltiSnipsSnippetDirectories = {
-        "~/.config/nvim/snippets/Ultisnips"
-      }
-    end,
-  },
+  -- {
+  --   "SirVer/ultisnips",
+  --   lazy = false,
+  --   dependencies = {
+  --     "honza/vim-snippets",
+  --   },
+  --   config = function()
+  --     vim.g.UltiSnipsSnippetDirectories = {
+  --       "~/.config/nvim/snippets/Ultisnips"
+  --     }
+  --   end,
+  -- },
   { require('lazy/autocomplete').config },
-  require('lazy/nvimlsp').config(),
+  require('lazy/lsp').config,
 
   {
     "voldikss/vim-floaterm",
@@ -131,11 +131,33 @@ require('lazy').setup({
     build = ':TSUpdate',
     lazy = false,
   },
-  { "p00f/nvim-ts-rainbow" },
+  { "hiphish/rainbow-delimiters.nvim" },
   { "nvim-treesitter/nvim-treesitter-context" },
 
   -- TODO: markdown preview
-  {},
+  {
+      "nvim-mini/mini.icons",
+      config = function()
+            require("mini.icons").setup()
+      end,
+  },
+  {
+      "OXY2DEV/markview.nvim",
+      lazy = false,
+
+      -- Completion for `blink.cmp`
+      -- dependencies = { "saghen/blink.cmp" },
+      dependencies = { "nvim-mini/mini.icons" },
+      config = function()
+            -- vim.opt.termguicolors = true  -- 必须！
+            require("markview").setup({
+                icons = {
+                    enable = false,
+                    provider = 'mini',  -- 明确使用 mini.icons
+                },
+            })
+      end,
+  };
 
 
   {
@@ -273,21 +295,21 @@ require('lazy').setup({
   { "jiangmiao/auto-pairs" },
 
   -- test
-  {
-    "RRethy/vim-illuminate",
-    config = function()
-      require('illuminate').configure({
-        providers = {
-          -- 'lsp',
-          -- 'treesitter',
-          'regex',
-        },
-      })
-      -- vim.cmd("hi IlluminatedWordText guibg=#393E4D gui=none")
-    end
-  },
+   {
+     "RRethy/vim-illuminate",
+     config = function()
+       require('illuminate').configure({
+         providers = {
+           -- 'lsp',
+           -- 'treesitter',
+           'regex',
+         },
+       })
+       -- vim.cmd("hi IlluminatedWordText guibg=#393E4D gui=none")
+     end
+   },
   -- {
-  -- 	"dkarter/bullets.vim",
+  -- - 	"dkarter/bullets.vim",
   -- 	lazy = false,
   -- 	ft = { "markdown", "txt" },
   -- },
