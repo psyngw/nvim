@@ -162,7 +162,7 @@ M.config = {
           vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts)
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
           vim.keymap.set("n", "<a-w>", vim.lsp.buf.hover, opts)
-          vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, opts)
+          -- vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, opts)
           vim.keymap.set("i", "<a-w>", vim.lsp.buf.signature_help, opts)
           vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
           vim.keymap.set({ "n", "x" }, "<leader>fo", function() vim.lsp.buf.format({ async = true }) end, opts)

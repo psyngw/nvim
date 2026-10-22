@@ -19,9 +19,7 @@ function M.config()
     endf
     ]])
   G.cmd([[
-      set rtp+=~/.fzf
       set rtp+=/usr/bin/fzf
-      set rtp+=/usr/local/opt/fzf
     ]])
   G.map({
     { 'n', '<LEADER>fr', ':Ag<cr>', { silent = true, noremap = true } },

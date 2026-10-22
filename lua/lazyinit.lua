@@ -88,14 +88,20 @@ require('lazy').setup({
   },
 
   -- TODO: ranger -> joshuto
+  -- {
+  --   "kevinhwang91/rnvimr",
+  --   init = function()
+  --     require('lazy/ranger').config()
+  --   end,
+  --   config = function()
+  --     require('lazy/ranger').setup()
+  --   end
+  -- },
   {
-    "kevinhwang91/rnvimr",
-    init = function()
-      require('lazy/ranger').config()
-    end,
-    config = function()
-      require('lazy/ranger').setup()
-    end
+    "rolv-apneseth/tfm.nvim",
+    lazy = false,
+    opts = require('lazy/yazi').config(),
+    keys = require('lazy/yazi').keys(),
   },
 
   {
@@ -291,8 +297,34 @@ require('lazy').setup({
   { "tpope/vim-repeat" },
   { "tpope/vim-speeddating" },
   -- { "svermeulen/vim-subversive" },
-  { "Yggdroot/indentLine" },
+  -- { "Yggdroot/indentLine" },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   main = "ibl",
+  --   -- 不再使用 init，统一放在 config 里
+  --   config = function()
+  --       require('lazy/indent').setup()
+  --   end,
+  -- },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   main = "ibl",
+  --   opts = function(_, opts)
+  --     -- Other blankline configuration here
+  --     return require("indent-rainbowline").make_opts(opts)
+  --   end,
+  --   dependencies = {
+  --     "TheGLander/indent-rainbowline.nvim",
+  --   },
+  -- },
+  {
+    'saghen/blink.indent',
+    --- @module 'blink.indent'
+    --- @type blink.indent.Config
+    -- opts = {},
+  },
   { "jiangmiao/auto-pairs" },
+  { "lambdalisue/vim-suda" },
 
   -- test
    {

@@ -26,7 +26,7 @@ function M.config()
 end
 
 function M.setup()
-  -- nothing
+  require("tfm").setup()
 end
 
 return M

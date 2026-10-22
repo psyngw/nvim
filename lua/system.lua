@@ -121,6 +121,13 @@ G.cmd([[
   endfunc
 ]])
 
+-- readonly file sudo
+-- vim.api.nvim_create_user_command('W', 'write !sudo -A tee % > /dev/null', {})
+vim.api.nvim_create_user_command('W', 'SudaWrite', {})
+G.cmd([[
+  let g:suda_smart_edit = 1
+]])
+
 local wsl_release = ''
 local release_file = io.open('/proc/sys/kernel/osrelease', 'r')
 if release_file then

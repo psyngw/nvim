@@ -98,6 +98,10 @@ G.map({
 
 })
 
+vim.keymap.set("n", "q:", "<Nop>", { desc = "Disable command-line window" })
+vim.keymap.set("n", "q/", "<Nop>", { desc = "Disable search command-line window" })
+vim.keymap.set("n", "q?", "<Nop>", { desc = "Disable search command-line window" })
+
 -- 重设tab长度
 G.cmd('command! -nargs=* SetTab call SwitchTab(<q-args>)')
 G.cmd([[
